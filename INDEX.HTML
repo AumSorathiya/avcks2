@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jarvice — AI Desktop Virtual Assistant</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app" class="app">
+    <div class="left-panel">
+      <header class="brand">
+        <div class="orb"></div>
+        <h1>Jarvice</h1>
+        <p class="sub">At your service, sir.</p>
+      </header>
+
+      <div class="status">
+        <div class="status-row">
+          <span id="greeting">Initializing...</span>
+          <span id="clock" class="muted"></span>
+        </div>
+        <div class="status-row">
+          <span id="mic-status" class="muted">Microphone: —</span>
+          <span id="hotword-hint" class="muted">Say “Hey Jarvice”</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="toggle-listen" class="btn">Toggle Listen</button>
+        <button id="open-settings" class="btn ghost" aria-haspopup="dialog">Settings</button>
+      </div>
+
+      <section class="system-info card">
+        <h3>System Info</h3>
+        <ul>
+          <li><strong>Browser:</strong> <span id="browser-name">—</span></li>
+          <li><strong>Platform:</strong> <span id="platform">—</span></li>
+          <li><strong>Battery:</strong> <span id="battery">—</span></li>
+        </ul>
+      </section>
+
+      <section class="todo card">
+        <h3>To-Do</h3>
+        <div class="todo-input">
+          <input id="todo-text" placeholder="Add a task (say: add task ...)" aria-label="New task" />
+          <button id="todo-add" class="btn small">Add</button>
+        </div>
+        <ul id="todo-list" aria-live="polite"></ul>
+      </section>
+
+      <footer class="credits muted">Jarvice • Demo — Built with HTML/CSS/JS</footer>
+    </div>
+
+    <main class="right-panel">
+      <div class="chat-container card">
+        <div id="chat-feed" class="chat-feed" role="log" aria-live="polite"></div>
+      </div>
+
+      <div class="listen-visual">
+        <canvas id="wave" width="800" height="80"></canvas>
+        <div id="pulse" class="pulse"></div>
+      </div>
+
+      <audio id="jarvice-music" src="assets/music.mp3" preload="auto"></audio>
+    </main>
+  </div>
+
+  <!-- Settings Modal -->
+  <dialog id="settings-dialog" class="settings-dialog" aria-modal="true" aria-labelledby="settings-title">
+    <form method="dialog">
+      <h3 id="settings-title">Settings</h3>
+      <div class="settings-row">
+        <label for="theme-select">Theme</label>
+        <select id="theme-select">
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+        </select>
+      </div>
+      <div class="settings-row">
+        <label for="hotword-toggle">Hotword</label>
+        <input type="checkbox" id="hotword-toggle" checked />
+      </div>
+      <menu>
+        <button id="settings-close" class="btn ghost">Close</button>
+        <button id="settings-save" class="btn">Save</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
