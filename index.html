@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Jarvice — AI Desktop Assistant</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <div class="brand">
+        <span class="logo-circle"></span>
+        <h1 class="title">JARVICE</h1>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="settingsBtn" title="Settings" aria-label="Settings">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+            <path d="M12 8a4 4 0 100 8 4 4 0 000-8zm9.4 4a7.4 7.4 0 01-.07.99l2.12 1.65a.5.5 0 01.12.67l-2 3.46a.5.5 0 01-.61.21l-2.5-1a7.6 7.6 0 01-1.7.99l-.38 2.65a.5.5 0 01-.49.42h-4a.5.5 0 01-.49-.42l-.38-2.65a7.6 7.6 0 01-1.7-.99l-2.5 1a.5.5 0 01-.61-.21l-2-3.46a.5.5 0 01.12-.67l2.12-1.65A7.4 7.4 0 012.6 12c0-.33.02-.66.07-.99L.55 9.36a.5.5 0 01-.12-.67l2-3.46a.5.5 0 01.61-.21l2.5 1c.52-.4 1.1-.74 1.7-.99l.38-2.65A.5.5 0 018.11 2h4c.24 0 .44.17.49.42l.38 2.65c.6.25 1.18.58 1.7.99l2.5-1a.5.5 0 01.61.21l2 3.46a.5.5 0 01-.12.67l-2.12 1.65c.05.33.07.66.07.99z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="left">
+        <div id="visualizer" class="visualizer" aria-live="polite">
+          <canvas id="waveCanvas" class="wave-canvas" aria-hidden="true"></canvas>
+          <div class="pulse-ring ring-1"></div>
+          <div class="pulse-ring ring-2"></div>
+          <div class="core-dot"></div>
+          <div class="status">
+            <span id="listenStatus">Initializing...</span>
+            <span class="hint">Wake word: "Hey Jarvice"</span>
+          </div>
+        </div>
+
+        <div class="quick-cards">
+          <div class="card" id="batteryCard">
+            <div class="card-title">Battery</div>
+            <div class="card-body" id="batteryInfo">Fetching...</div>
+          </div>
+          <div class="card">
+            <div class="card-title">System</div>
+            <div class="card-body" id="systemInfo">Detecting...</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Now</div>
+            <div class="card-body" id="clock">--:--</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="right">
+        <ul id="chat" class="chat" aria-live="polite" aria-label="Conversation"></ul>
+      </section>
+    </main>
+  </div>
+
+  <div id="permissionOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="permTitle">
+    <div class="overlay-content">
+      <h2 id="permTitle">Microphone permission needed</h2>
+      <p>Jarvice tried to start listening automatically, but your browser blocked it. Please allow microphone permissions and, if needed, click the button below.</p>
+      <button id="enableMicBtn" class="primary-btn">Enable Microphone</button>
+    </div>
+  </div>
+
+  <div id="settingsModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="settingsTitle">Settings</h3>
+        <button id="closeSettings" class="icon-btn" aria-label="Close Settings">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="owmKey">OpenWeatherMap API Key (optional)</label>
+          <input id="owmKey" type="text" placeholder="Enter your free API key" />
+          <small>Jarvice will use Open-Meteo for free by default. If you provide an OpenWeatherMap key, it will be used when available.</small>
+        </div>
+        <div class="form-group">
+          <label for="wakeWord">Wake word</label>
+          <input id="wakeWord" type="text" placeholder="e.g., Hey Jarvice" />
+          <small>Say this to activate listening. Example: "Hey Jarvice" or "Computer".</small>
+        </div>
+        <div class="form-group">
+          <label for="voiceRate">Voice rate</label>
+          <input id="voiceRate" type="range" min="0.7" max="1.5" step="0.05" />
+          <small>Adjust Jarvice's speaking speed.</small>
+        </div>
+        <div class="form-group">
+          <label for="voicePitch">Voice pitch</label>
+          <input id="voicePitch" type="range" min="0.5" max="1.5" step="0.05" />
+          <small>Adjust Jarvice's voice tone.</small>
+        </div>
+        <div class="form-group">
+          <label for="userName">Preferred name</label>
+          <input id="userName" type="text" placeholder="e.g., Sir" />
+          <small>Used for personalized greetings.</small>
+        </div>
+        <div class="form-group">
+          <label><input id="muteVoice" type="checkbox" /> Mute voice (text-only)</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="testVoice" class="icon-btn" title="Test voice">Test Voice</button>
+        <button id="saveSettings" class="primary-btn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="localMusic" src="assets/music.mp3" preload="auto"></audio>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
